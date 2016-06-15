@@ -41,7 +41,7 @@ We'll be building a simple Rails 5 API that serves data regarding cats and their
 
 <iframe src="//giphy.com/embed/FyGHRHcD3RzCo" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="http://giphy.com/gifs/catvidfest-cat-grumpy-alexander-lansang-FyGHRHcD3RzCo">via GIPHY</a></p> 
 
-So, our app has two main resources: cats and hobbies. A cat has many hobbies and a hobby has may cats. We have a cat-hobbies join table to accommodate that many-to-many relationship. 
+So, our app has two main resources: cats and hobbies. A cat has many hobbies and a hobby has many cats. We have a cat-hobbies join table to accommodate that many-to-many relationship. 
 
 You can view the completed code [here](https://github.com/learn-co-curriculum/rails-5-json-api-example-app), by the way. 
 
