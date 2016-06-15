@@ -53,14 +53,14 @@ First, `gem install rails --pre` to get the latest version of Rails 5. Then run 
 
 Great, go ahead and `cd` into the directory. Add the following gems to your Gemfile:
 
-```prettyprint lang-ruby
+```ruby
 gem 'active_model_serializers'
 gem 'rack-cors'
 ```
 
 And, if you're working with Rails 4
 
-```prettyprint lang-ruby
+```ruby
 gem 'rails-api'
 ```
 
@@ -68,7 +68,7 @@ Go ahead and bundle install.
 
 Now, we need to set our API's adapter to JSON API. Create a file, `config/initializers/active_model_serializer.rb` and set the adapter here:
 
-```prettyprint lang-ruby
+```ruby
 ActiveModelSerializers.config.adapter = :json_api
 ```
 
@@ -76,7 +76,7 @@ This will tell Rails to serialize our data in the JSON API format.
 
 We also have to tell our app to accept the JSON API mime type when receiving data (for when our client `POST`s data to the server). In the same file, add the following:
 
-```prettyprint lang-ruby
+```ruby
 api_mime_types = %W(
   application/vnd.api+json
   text/x-json
@@ -87,7 +87,7 @@ Mime::Type.register 'application/vnd.api+json', :json, api_mime_types
 
 Lastly, don't forget to set up CORS. I use the `rack-cors` gem. If you're working with Rails 4, simply include the following in your `config/application.rb`:
 
-```prettyprint lang-ruby
+```ruby
 ...
 config.middleware.insert_before 0, "Rack::Cors" do
   allow do
@@ -105,7 +105,7 @@ In Rails 5, simply comment in the code in `config/initializers/cors.rb` and set 
 
 Generate a resource for Cat, Hobby and Cat Hobbies. Define your migrations to give Cat the following attributes:
 
-```prettyprint lang-ruby
+```ruby
 class CreateCats < ActiveRecord::Migration[5.0]
   def change
     create_table :cats do |t|
@@ -121,7 +121,7 @@ end
 
 Hobby:
 
-```prettyprint lang-ruby
+```ruby
 class CreateHobbies < ActiveRecord::Migration[5.0]
   def change
     create_table :hobbies do |t|
@@ -134,7 +134,7 @@ end
 
 and, Cat Hobbies:
 
-```prettyprint lang-ruby
+```ruby
 class CreateCatHobbies < ActiveRecord::Migration[5.0]
   def change
     create_table :cat_hobbies do |t|
@@ -148,7 +148,7 @@ end
 
 Then, set up your models with the following associations:
 
-```prettyprint lang-ruby
+```ruby
 # app/models/cat.rb
 
 class Cat < ApplicationRecord
@@ -157,7 +157,7 @@ class Cat < ApplicationRecord
 end
 ```
 
-```prettyprint lang-ruby
+```ruby
 # app/models/hobby.rb
 
 class Hobby < ApplicationRecord
@@ -166,7 +166,7 @@ class Hobby < ApplicationRecord
 end
 ```
 
-```prettyprint lang-ruby
+```ruby
 # app/models/cat_hobby.rb
 
 class CatHobby < ApplicationRecord
@@ -179,7 +179,7 @@ end
 
 We'll namespace our routes in the following way:
 
-```prettyprint lang-ruby
+```ruby
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
@@ -216,7 +216,7 @@ Well, our client needs to display both cat and associated hobby data to the user
 
 So, let's define our Cat Serializer to serialize a cat's attributes, along with its associated hobbies:
 
-```prettyprint lang-ruby
+```ruby
 class CatSerializer < ActiveModel::Serializer
   attributes :id, :name, :breed, :weight, :temperament
   has_many :hobbies
@@ -227,7 +227,7 @@ This will tell Rails to include a key of `relationships`, describing the related
 
 So, if we define our `Cats#index` like this:
 
-```prettyprint lang-ruby
+```ruby
 module Api
   module V1
     class CatsController < ApplicationController
@@ -296,7 +296,7 @@ We can see our `relationships` key is present, describing the associated hobby d
 
 To side load our data, we need to add the following to our `render` call in the controller:
 
-```prettyprint lang-ruby
+```ruby
 render json: Cat.all, include: ['hobbies']
 ```
 
@@ -403,7 +403,7 @@ Let's clean this up, and only query our database once, for *all* the hobbies ass
 
 Change your `render` call in the following way:
 
-```prettyprint lang-ruby
+```ruby
 render json: Cat.includes(:hobbies), include: ['hobbies']
 ```
 
@@ -419,7 +419,7 @@ Much more efficient! Instead of querying the database for cat hobbies, once for 
 
 You may notice that the data we're serving on hobby records includes the `relationship` key, pointing to data describing related cats in turn. That's because I've already set up my Hobby Serializer. Let's take a look:
 
-```prettyprint lang-ruby
+```ruby
 class HobbySerializer < ActiveModel::Serializer
   attributes :id, :name
   has_many :cats
@@ -428,7 +428,7 @@ end
 
 Additionally, you can use the following in your Hobby Controller to ensure that cat records are `included`, i.e. side loaded, in the response to any request for hobbies:
 
-```prettyprint lang-ruby
+```ruby
 module Api
   module V1
     class HobbiesController < ApplicationController
