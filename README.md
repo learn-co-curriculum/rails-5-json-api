@@ -43,7 +43,7 @@ We'll be building a simple Rails 5 API that serves data regarding cats and their
 
 So, our app has two main resources: cats and hobbies. A cat has many hobbies and a hobby has may cats. We have a cat-hobbies join table to accommodate that many-to-many relationship. 
 
-You can view the completed code [here](https://github.com/SophieDeBenedetto/catbook-api), by the way. 
+You can view the completed code [here](https://github.com/learn-co-curriculum/rails-5-json-api-example-app), by the way. 
 
 Let's begin!
 
