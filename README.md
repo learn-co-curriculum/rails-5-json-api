@@ -92,8 +92,8 @@ Lastly, don't forget to set up CORS. I use the `rack-cors` gem. If you're workin
 config.middleware.insert_before 0, "Rack::Cors" do
   allow do
     origins '*'
-    resource '*', :headers => :any, :methods => :get, 
-      :post, :delete, :put, :patch, :options, :head
+    resource '*', :headers => :any, :methods => [:get, 
+      :post, :delete, :put, :patch, :options, :head]
     end
   end
 ...
@@ -457,3 +457,5 @@ end
 ```
 
 And that's it!
+
+<p class='util--hide'>View <a href='https://learn.co/lessons/rails-5-json-api'>Rails 5 Json Api</a> on Learn.co and start learning to code for free.</p>
